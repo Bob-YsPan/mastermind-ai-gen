@@ -7,6 +7,7 @@
 </head>
 <body>
   <h1>猜數字遊戲</h1>
+  <p>早期瀏覽器請跳轉到<a href="https://bob-yspan.github.io/mastermind-ai-gen/index-old.html">這裡</a>以避免執行不了的問題！</p>
   <p>遊戲規則：遊戲開始時會產生一個由 1 到 8 組成，不重複的四位數字。玩家輸入自己的猜測，遊戲比對玩家猜測的跟答案是否符合，當玩家猜測的數字位置跟答案的數字位置符合，用 X 表示，當玩家猜測的數字位置有出現在答案中，但是位置不符合，用 O 表示。當玩家猜中答案時，表示則為 XXXX，遊戲將跳出過關訊息，遊戲結束。遊戲只有 9 次猜測機會，每次猜測前提示剩下幾次猜測次數。</p>
   <p id="guesses-remaining">剩餘猜測次數：9</p>
   <input id="guess" type="text" maxlength="4">
