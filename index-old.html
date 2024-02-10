@@ -1,40 +1,31 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-  <meta charset="UTF-8">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
+<!--Backward compatibility powered by ChatGPT 3.5-->
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>猜數字遊戲</title>
-</head>
-<body>
-  <h1>猜數字遊戲</h1>
-  <p>遊戲規則：遊戲開始時會產生一個由 1 到 8 組成，不重複的四位數字。玩家輸入自己的猜測，遊戲比對玩家猜測的跟答案是否符合，當玩家猜測的數字位置跟答案的數字位置符合，用 X 表示，當玩家猜測的數字位置有出現在答案中，但是位置不符合，用 O 表示。當玩家猜中答案時，表示則為 XXXX，遊戲將跳出過關訊息，遊戲結束。遊戲只有 9 次猜測機會，每次猜測前提示剩下幾次猜測次數。</p>
-  <p id="guesses-remaining">剩餘猜測次數：9</p>
-  <input id="guess" type="text" maxlength="4">
-  <button id="submit">送出</button>
-  <div id="results"></div>
   <script>
     // 產生答案
     function generateAnswer() {
-      const numbers = Array(8);
-      for (let i = 0; i < 8; i++) {
-        numbers[i] = i + 1;
+      var numbers = [];
+      for (var i = 1; i <= 8; i++) {
+        numbers.push(i);
       }
-      numbers.sort(function() {
-        return Math.random() - 0.5;
-      });
+      numbers.sort(function() { return Math.random() - 0.5; });
       return numbers.slice(0, 4).join("");
     }
 
     // 初始化猜測次數、答案和猜測次數
-    let guessesRemaining = 9;
-    let answer = generateAnswer();
-    let guessCount = 1;
+    var guessesRemaining = 9;
+    var answer = generateAnswer();
+    var guessCount = 1;
 
     // 玩家輸入完按下"送出"文字的<button>
-    const submitButton = document.getElementById("submit");
-    submitButton.onclick = function() {
+    function handleClick() {
       // 讀取玩家猜測
-      const guess = document.getElementById("guess").value;
+      var guess = document.getElementById("guess").value;
 
       // 檢查猜測是否有效
       if (!/^[1-8]{4}$/.test(guess)) {
@@ -43,10 +34,10 @@
       }
 
       // 比對猜測跟答案
-      let result = "";
-      let xCount = 0;
-      let oCount = 0;
-      for (let i = 0; i < answer.length; i++) {
+      var result = "";
+      var xCount = 0;
+      var oCount = 0;
+      for (var i = 0; i < answer.length; i++) {
         if (answer.charAt(i) === guess.charAt(i)) {
           xCount++;
         } else if (answer.indexOf(guess.charAt(i)) !== -1) {
@@ -55,18 +46,18 @@
       }
 
       // 顯示猜測結果
-      const resultsElement = document.getElementById("results");
-      const resultElement = document.createElement("p");
+      var resultsElement = document.getElementById("results");
+      var resultElement = document.createElement("p");
 
       // 使用迴圈重複加到字串的方法
-      for (let i = 0; i < xCount; i++) {
+      for (var j = 0; j < xCount; j++) {
         result += "X";
       }
-      for (let i = 0; i < oCount; i++) {
+      for (var k = 0; k < oCount; k++) {
         result += "O";
       }
 
-      resultElement.textContent = guessCount + ". " + guess + " -- " + result;
+      resultElement.innerHTML = guessCount + ". " + guess + " -- " + result;
       resultsElement.appendChild(resultElement);
 
       // 檢查是否猜中答案
@@ -80,8 +71,8 @@
       guessCount++;
 
       // 更新剩餘猜測次數
-      const guessesRemainingElement = document.getElementById("guesses-remaining");
-      guessesRemainingElement.textContent = "剩餘猜測次數：" + guessesRemaining;
+      var guessesRemainingElement = document.getElementById("guesses-remaining");
+      guessesRemainingElement.innerHTML = "剩餘猜測次數：" + guessesRemaining;
 
       // 檢查是否猜測次數已用完
       if (guessesRemaining === 0) {
@@ -89,7 +80,15 @@
         alert("答案是：" + answer);
         return;
       }
-    };
+    }
   </script>
+</head>
+<body>
+  <h1>猜數字遊戲</h1>
+  <p>遊戲規則：遊戲開始時會產生一個由 1 到 8 組成，不重複的四位數字。玩家輸入自己的猜測，遊戲比對玩家猜測的跟答案是否符合，當玩家猜測的數字位置跟答案的數字位置符合，用 X 表示，當玩家猜測的數字位置有出現在答案中，但是位置不符合，用 O 表示。當玩家猜中答案時，表示則為 XXXX，遊戲將跳出過關訊息，遊戲結束。遊戲只有 9 次猜測機會，每次猜測前提示剩下幾次猜測次數。</p>
+  <p id="guesses-remaining">剩餘猜測次數：9</p>
+  <input id="guess" type="text" maxlength="4">
+  <button id="submit" onclick="handleClick()">送出</button>
+  <div id="results"></div>
 </body>
 </html>
