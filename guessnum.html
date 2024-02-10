@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>猜數字遊戲</title>
+</head>
+<body>
+  <h1>猜數字遊戲</h1>
+  <p>遊戲規則：遊戲開始時會產生一個由 1 到 8 組成，不重複的四位數字。玩家輸入自己的猜測，遊戲比對玩家猜測的跟答案是否符合，當玩家猜測的數字位置跟答案的數字位置符合，用 X 表示，當玩家猜測的數字位置有出現在答案中，但是位置不符合，用 O 表示。當玩家猜中答案時，表示則為 XXXX，遊戲將跳出過關訊息，遊戲結束。遊戲只有 9 次猜測機會，每次猜測前提示剩下幾次猜測次數。</p>
+  <p id="guesses-remaining">剩餘猜測次數：9</p>
+  <input id="guess" type="text" maxlength="4">
+  <button id="submit">送出</button>
+  <div id="results"></div>
+  <script>
+    // 產生答案
+    function generateAnswer() {
+      const numbers = Array(8).fill(null).map((_, i) => i + 1);
+      numbers.sort(() => Math.random() - 0.5);
+      return numbers.slice(0, 4).join("");
+    }
+
+    // 初始化猜測次數、答案和猜測次數
+    let guessesRemaining = 9;
+    let answer = generateAnswer();
+    let guessCount = 1;
+
+    // 玩家輸入完按下"送出"文字的<button>
+    const submitButton = document.getElementById("submit");
+    submitButton.addEventListener("click", () => {
+      // 讀取玩家猜測
+      const guess = document.getElementById("guess").value;
+
+      // 檢查猜測是否有效
+      if (!/^[1-8]{4}$/.test(guess)) {
+        alert("輸入錯誤，請重新輸入。");
+        return;
+      }
+
+      // 比對猜測跟答案
+      let result = "";
+      let xCount = 0;
+      let oCount = 0;
+      for (let i = 0; i < answer.length; i++) {
+        if (answer[i] === guess[i]) {
+          xCount++;
+        } else if (answer.includes(guess[i])) {
+          oCount++;
+        }
+      }
+
+      // 顯示猜測結果
+      const resultsElement = document.getElementById("results");
+      const resultElement = document.createElement("p");
+
+      // 使用迴圈重複加到字串的方法
+      for (let i = 0; i < xCount; i++) {
+        result += "X";
+      }
+      for (let i = 0; i < oCount; i++) {
+        result += "O";
+      }
+
+      resultElement.textContent = `${guessCount}. ${guess} -- ${result}`;
+      resultsElement.appendChild(resultElement);
+
+      // 檢查是否猜中答案
+      if (result === "XXXX") {
+        alert("恭喜您過關！");
+        return;
+      }
+
+      // 減少猜測次數和增加猜測次數
+      guessesRemaining--;
+      guessCount++;
+
+      // 更新剩餘猜測次數
+      const guessesRemainingElement = document.getElementById("guesses-remaining");
+      guessesRemainingElement.textContent = `剩餘猜測次數：${guessesRemaining}`;
+
+      // 檢查是否猜測次數已用完
+      if (guessesRemaining === 0) {
+        alert("很遺憾，您沒有猜中答案。");
+        alert(`答案是：${answer}`);
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
+
